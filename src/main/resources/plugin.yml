@@ -1,0 +1,12 @@
+main: kp.node.kuroplugin
+version: 1.0.0
+name: kuroplugin
+author: node
+api-version: 1.13
+
+commands:
+  InfiniteVillagerTrades:
+    description: "Activate Infinite Villager Trades."
+    usage: "/InfiniteVillagerTrades"
+    aliases:
+      - ivt
