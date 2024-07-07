@@ -10,3 +10,9 @@ commands:
     usage: "/InfiniteVillagerTrades"
     aliases:
       - ivt
+
+  InfiniteVillagerTradesOff:
+    description: "Deactivate Infinite Villager Trades."
+    usage: "/InfiniteVillagerTradesOff"
+    aliases:
+      - ivto
