@@ -19,7 +19,7 @@ public class InfiniteVillagerTradesOff implements CommandExecutor {
         if (sender instanceof Player) {
             plugin.setInfiniteVillagerTrades(false);
             plugin.saveConfig();
-            sender.sendMessage("Intercambios infinitos deshabilitados");
+            sender.sendMessage("Intercambios infinitos deshabilitados y restablecidos a los valores predeterminados.");
             return true;
         }
         return false;

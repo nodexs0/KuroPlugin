@@ -17,17 +17,27 @@ public class VillagerTradeListener implements Listener {
 
     @EventHandler
     public void onVillagerReplenishTrade(VillagerReplenishTradeEvent event) {
-        if (plugin.isInfiniteVillagerTrades()) {
-            MerchantRecipe recipe = event.getRecipe();
-            recipe.setMaxUses(Integer.MAX_VALUE);
+        MerchantRecipe recipe = event.getRecipe();
+        if (recipe != null) {
+            if (plugin.isInfiniteVillagerTrades()) {
+                recipe.setMaxUses(Integer.MAX_VALUE);
+            } else {
+                int defaultMaxUses = plugin.getConfig().getInt("defaultMaxUses", 12); // Load from config
+                recipe.setMaxUses(defaultMaxUses);
+            }
         }
     }
 
     @EventHandler
     public void onVillagerAcquireTrade(VillagerAcquireTradeEvent event) {
-        if (plugin.isInfiniteVillagerTrades()) {
-            MerchantRecipe recipe = event.getRecipe();
-            recipe.setMaxUses(Integer.MAX_VALUE);
+        MerchantRecipe recipe = event.getRecipe();
+        if (recipe != null) {
+            if (plugin.isInfiniteVillagerTrades()) {
+                recipe.setMaxUses(Integer.MAX_VALUE);
+            } else {
+                int defaultMaxUses = plugin.getConfig().getInt("defaultMaxUses", 12); // Load from config
+                recipe.setMaxUses(defaultMaxUses);
+            }
         }
     }
 }
