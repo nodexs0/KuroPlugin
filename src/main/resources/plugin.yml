@@ -15,4 +15,10 @@ commands:
     description: "Deactivate Infinite Villager Trades."
     usage: "/InfiniteVillagerTradesOff"
     aliases:
-      - ivto
+
+  warp:
+    description: "Manage warps"
+    usage: "/warp <set|del|teleport> <warpName>"
+    aliases:
+      - w
+

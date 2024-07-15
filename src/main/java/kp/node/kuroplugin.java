@@ -2,6 +2,7 @@ package kp.node;
 
 import kp.node.commands.InfiniteVillagerTrades;
 import kp.node.commands.InfiniteVillagerTradesOff;
+import kp.node.commands.WarpsCommand;
 import kp.node.listeners.VillagerTradeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -41,6 +42,7 @@ public class kuroplugin extends JavaPlugin {
     private void registerCommands() {
         getCommand("InfiniteVillagerTrades").setExecutor(new InfiniteVillagerTrades(this));
         getCommand("InfiniteVillagerTradesOff").setExecutor(new InfiniteVillagerTradesOff(this));
+        getCommand("warp").setExecutor(new WarpsCommand(this));
     }
 
     private void registerEvents() {
