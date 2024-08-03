@@ -2,14 +2,24 @@ package kp.node.commands;
 
 import kp.node.kuroplugin;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-public class WarpsCommand implements CommandExecutor {
+import java.util.Set;
+
+public class WarpsCommand implements CommandExecutor, Listener {
 
     private final kuroplugin plugin;
 
@@ -25,28 +35,75 @@ public class WarpsCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        if (args.length == 0) {
-            player.sendMessage("Usage: /warp <set|del|teleport> <warpName>");
-            return true;
+
+        if (command.getName().equalsIgnoreCase("warp")) {
+            if (args.length == 0) {
+                openWarpGUI(player);
+                return true;
+            } else if (args.length == 1) {
+                String warpName = args[0].toLowerCase();
+                teleportToWarp(player, warpName);
+                return true;
+            } else {
+                player.sendMessage("Usage: /warp or /warp <warpName>");
+                return true;
+            }
+        } else if (command.getName().equalsIgnoreCase("setwarp")) {
+            if (args.length == 1) {
+                String warpName = args[0].toLowerCase();
+                setWarp(player, warpName);
+                player.sendMessage("Warp " + warpName + " set!");
+                return true;
+            } else {
+                player.sendMessage("Usage: /setwarp <warpName>");
+                return true;
+            }
+        } else if (command.getName().equalsIgnoreCase("delwarp")) {
+            if (args.length == 1) {
+                String warpName = args[0].toLowerCase();
+                delWarp(player, warpName);
+                player.sendMessage("Warp " + warpName + " deleted!");
+                return true;
+            } else {
+                player.sendMessage("Usage: /delwarp <warpName>");
+                return true;
+            }
         }
 
-        String subCommand = args[0].toLowerCase();
+        return false;
+    }
 
-        if (subCommand.equals("set") && args.length == 2) {
-            setWarp(player, args[1]);
-            player.sendMessage("Warp " + args[1] + " set!");
-            return true;
-        } else if (subCommand.equals("del") && args.length == 2) {
-            delWarp(player, args[1]);
-            player.sendMessage("Warp " + args[1] + " deleted!");
-            return true;
-        } else if (subCommand.equals("teleport") && args.length == 2) {
-            teleportToWarp(player, args[1]);
-            return true;
+    private void openWarpGUI(Player player) {
+        FileConfiguration config = plugin.getConfig();
+        Set<String> warps = config.getConfigurationSection("warps").getKeys(false);
+
+        Inventory warpInventory = Bukkit.createInventory(null, 27, "Select a Warp");
+
+        int i = 0;
+        for (String warp : warps) {
+            ItemStack item = new ItemStack(Material.ENDER_PEARL);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ChatColor.GREEN + warp);
+            item.setItemMeta(meta);
+            warpInventory.setItem(i, item);
+            i++;
         }
 
-        player.sendMessage("Usage: /warp <set|del|teleport> <warpName>");
-        return true;
+        player.openInventory(warpInventory);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!event.getView().getTitle().equals("Select a Warp")) return;
+        event.setCancelled(true);
+
+        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta()) return;
+
+        Player player = (Player) event.getWhoClicked();
+        String warpName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
+
+        teleportToWarp(player, warpName);
+        player.closeInventory();
     }
 
     private void setWarp(Player player, String warpName) {

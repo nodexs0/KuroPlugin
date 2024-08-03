@@ -17,8 +17,19 @@ commands:
     aliases:
 
   warp:
-    description: "Manage warps"
-    usage: "/warp <set|del|teleport> <warpName>"
+    description: "Manage and teleport to warps"
+    usage: "/warp or /warp <warpName>"
     aliases:
       - w
 
+  setWarp:
+    description: "Set a new warp"
+    usage: "/setWarp <warpName>"
+    aliases:
+      - sw
+
+  delwarp:
+    description: "Delete a warp"
+    usage: "/delwarp <warpName>"
+    aliases:
+      - dw
